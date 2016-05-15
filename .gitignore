@@ -27,6 +27,9 @@
 *.out
 *.app
 
+#build folder
+test/cpp
+
 # =========================
 # Operating System Files
 # =========================

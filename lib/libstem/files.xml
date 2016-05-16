@@ -1,0 +1,10 @@
+<xml>
+	<files id="native-libstem">
+		
+		<file name="-I${LINC_STEMPAD_PATH}/lib/libstem/src/Gamepad.h"/>
+		<file name="-I${LINC_STEMPAD_PATH}/lib/libstem/src/Gamepad_private.h"/>
+		<file name="-I${LINC_STEMPAD_PATH}/lib/libstem/src/Gamepad_private.c"/>
+		<file name="-I${LINC_STEMPAD_PATH}/lib/libstem/src/Gamepad_windows_dinput.c"/>
+		
+	</files>
+</xml>

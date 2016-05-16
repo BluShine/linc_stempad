@@ -1,9 +1,14 @@
 #ifndef _LINC_STEMPAD_H_
 #define _LINC_STEMPAD_H_
     
-// #include "../lib/____"
+#include "../lib/libstem/src/Gamepad.h"
 
 #include <hxcpp.h>
+
+#undef RegisterClass
+#include "stempad/stempad.h"
+#undef RegisterClass
+
 
 namespace linc {
 

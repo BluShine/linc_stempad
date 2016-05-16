@@ -2,6 +2,8 @@
 
     <!-- For a more in depth guide: https://github.com/snowkit/hxcpp-guide -->
 
+	<include name="${LINC_STEMPAD_PATH}lib/libstem/files.xml"/>
+	
     <files id='haxe'>
 
         <!-- add files and flags to the haxe c++ build -->

@@ -1,7 +1,10 @@
 package stempad;
+import cpp.Uint16;
 
 @:keep
 @:include('linc_stempad.h')
+@:keep
+@:include('Gamepad.h')
 #if !display
 @:build(linc.Linc.touch())
 @:build(linc.Linc.xml('stempad'))
@@ -27,5 +30,14 @@ extern class Stempad {
     static inline function other_inline_example() : Int {
         return _internal_example();
     }
+	
+	@:native('::Gamepad_init')
+	static function gamepad_init():Void;
+	
+	@:native('::Gamepad_shutdown')
+	static function gamepad_shutdown():Void;
+	
+	@:native('::Gamepad_numDevices')
+	static function gamepad_numDevices():Int;
 
 } //Stempad

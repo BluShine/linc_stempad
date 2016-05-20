@@ -5,10 +5,6 @@
 
 #include <hxcpp.h>
 
-#undef RegisterClass
-#include "stempad/stempad.h"
-#undef RegisterClass
-
 
 namespace linc {
 

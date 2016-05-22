@@ -1,10 +1,15 @@
 <xml>
 	<files id="native-libstem">
 		
-		<file name="-I${LINC_STEMPAD_PATH}/lib/libstem/src/Gamepad.h"/>
-		<file name="-I${LINC_STEMPAD_PATH}/lib/libstem/src/Gamepad_private.h"/>
-		<file name="-I${LINC_STEMPAD_PATH}/lib/libstem/src/Gamepad_private.c"/>
-		<file name="-I${LINC_STEMPAD_PATH}/lib/libstem/src/Gamepad_windows_dinput.c"/>
+		<file name="${LINC_STEMPAD_PATH}lib/libstem/src/Gamepad_private.c"/>
+		<file name="${LINC_STEMPAD_PATH}lib/libstem/src/Gamepad_windows_dinput.c"/>
 		
 	</files>
+	
+	<target id="haxe">
+		<!-- add linker flags to the haxe build output -->
+
+        <!-- reference the files in the haxe target so they get included -->
+        <files id="native-libstem"/>
+	</target>
 </xml>

@@ -34,8 +34,8 @@
 #define __reserved
 #endif
   
-#include "gamepad/Gamepad.h"
-#include "gamepad/Gamepad_private.h"
+#include "Gamepad.h"
+#include "Gamepad_private.h"
 #include <stdio.h>
 #include <stdlib.h>
 

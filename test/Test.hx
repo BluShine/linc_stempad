@@ -39,6 +39,16 @@ class Test {
 			Stempad.gamepad_detectDevices();
 			Stempad.gamepad_processEvents();
 			//trace(Stempad.gamepad_numDevices());
+			for (i in 0 ... Stempad.gamepad_numDevices()) {
+				var device:GamepadDevice = Stempad.gamepad_deviceAtIndex(i).value;
+				for (i in 0 ... device.numButtons) {
+					
+					var states:Pointer<Bool> = device.buttonStates;
+					if (states.add(i).ref == true) {
+						trace("P" + Std.string(device.deviceID) + " button " + i);
+					}
+				}
+			}
 		}
 	}
 }

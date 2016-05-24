@@ -1,5 +1,5 @@
 package stempad;
-import cpp.Uint16;
+import cpp.*;
 
 @:keep
 @:include('linc_stempad.h')
@@ -9,6 +9,22 @@ import cpp.Uint16;
 @:build(linc.Linc.touch())
 @:build(linc.Linc.xml('stempad'))
 #end
+
+@:structAccess
+@:unreflective
+@:native('::Gamepad_device')
+extern class GamepadDevice {
+	var deviceID:Int;
+	var description:ConstCharStar;
+	var vendorID:Int;
+	var productID:Int;
+	var numAxes:Int;
+	var numButtons:Int;
+	var axisStates:Pointer<Float>;
+	var buttonStates:Pointer<Bool>;
+	var privateData:Pointer<Void>;
+}
+
 extern class Stempad {
 
         //external native function definition
@@ -39,5 +55,15 @@ extern class Stempad {
 	
 	@:native('::Gamepad_numDevices')
 	static function gamepad_numDevices():Int;
+	
+	@:native('Gamepad_deviceAtIndex')
+	static function gamepad_deviceAtIndex(deviceIndex:Int):Pointer<GamepadDevice>;
+	
+	@:native('Gamepad_detectDevices')
+	static function gamepad_detectDevices():Void;
+	
+	@:native('Gamepad_processEvents')
+	static function gamepad_processEvents():Void;
+} 
 
-} //Stempad
+//Stempad

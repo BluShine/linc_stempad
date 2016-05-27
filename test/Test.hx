@@ -4,9 +4,9 @@ import haxe.Log;
 import stempad.Stempad;
 import cpp.Pointer;
 import cpp.ConstCharStar;
+import cpp.Float32;
 
 class Test {
-	public static var contextArr:Array<Int> = [1, 2, 3, 4];
     static function main() {
 
         trace(stempad.Stempad.example());
@@ -42,11 +42,16 @@ class Test {
 			for (i in 0 ... Stempad.gamepad_numDevices()) {
 				var device:GamepadDevice = Stempad.gamepad_deviceAtIndex(i).value;
 				for (i in 0 ... device.numButtons) {
-					
 					var states:Pointer<Bool> = device.buttonStates;
 					if (states.add(i).ref == true) {
 						trace("P" + Std.string(device.deviceID) + " button " + i);
 					}
+				}
+				for (i in 0 ... device.numAxes) {
+					var aStates:Pointer<Float32> = device.axisStates;
+					var axisVal:Float = aStates.add(i).ref;
+					if(Math.abs(axisVal) > .15 && Math.abs(axisVal) != 1)
+						trace(axisVal);
 				}
 			}
 		}

@@ -20,7 +20,7 @@ extern class GamepadDevice {
 	var productID:Int;
 	var numAxes:Int;
 	var numButtons:Int;
-	var axisStates:Pointer<Float>;
+	var axisStates:Pointer<Float32>;
 	var buttonStates:Pointer<Bool>;
 	var privateData:Pointer<Void>;
 }

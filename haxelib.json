@@ -1,0 +1,11 @@
+{
+  "name": "linc-libstem-gamepad",
+  "url" : "https://github.com/BluShine/linc_stempad",
+  "license": "MIT, zlib",
+  "tags": ["cpp", "game"],
+  "description": "A linc project for the cross-platform C gamepad wrapper libstem_gamepad.",
+  "version": "0.0.1",
+  "releasenote": "Initial release, everything is working correctly.",
+  "contributors": ["BluShine"],
+  "dependencies": {}
+}

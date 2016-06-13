@@ -51,7 +51,7 @@ class Test {
 					var aStates:Pointer<Float32> = device.axisStates;
 					var axisVal:Float = aStates.add(i).ref;
 					if(Math.abs(axisVal) > .15 && Math.abs(axisVal) != 1)
-						trace(axisVal);
+						trace("P" + Std.string(device.deviceID) + " axis " + i + axisVal);
 				}
 			}
 		}

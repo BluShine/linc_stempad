@@ -69,7 +69,7 @@ extern class Stempad {
 	
 	//callbacks
 	@:native('Gamepad_deviceAttachFunc')
-	private static function gamepad_deviceAttachFunc(callback:Callable<GamepadDevice->Int->Int>):Void;
+	private static function gamepad_deviceAttachFunc(callback:Callable<Pointer<GamepadDevice>->Pointer<Void>->Void>, context:Int):Void;
 	
 	static inline function addAttackCallback(func:StempadAttachRemoveCallback) : Void {
 		@:privateAccess Stempad_helper.add_attach_callback(func);
@@ -95,16 +95,15 @@ private class Stempad_helper {
 		attachFunc = callback;
 		if (!attachAdded) {
 			attachAdded = true;
-			@:privateAccess Stempad.gamepad_deviceAttachFunc(cpp.Callable.fromStaticFunction(attach_callback));
+			@:privateAccess Stempad.gamepad_deviceAttachFunc(cpp.Callable.fromStaticFunction(attach_callback), 0);
 		}
-		
 	}
 	
-	static function attach_callback(_device:GamepadDevice, _context:Int):Int {
+	static function attach_callback(_device:Pointer<GamepadDevice>, _context:Pointer<Void>) {
 		if (attachFunc != null) {
-			attachFunc(_device);
+			attachFunc(_device.value);
 		}
-		return _context;
+		
 	}
 }
 

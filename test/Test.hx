@@ -16,7 +16,8 @@ class Test {
 		trace(numDevices);
 		
 		for (i in 0 ... numDevices) {
-			var device:GamepadDevice = Stempad.gamepad_deviceAtIndex(i).value;
+			var dPointer:Pointer<GamepadDevice> = Stempad.gamepad_deviceAtIndex(i);
+			var device:GamepadDevice = dPointer.value;
 			trace("Pad " + Std.string(device.deviceID));
 			trace("\tdescription: " + device.description.toString());
 			//vendor and product IDs are 4-digit hex numbers.
@@ -40,16 +41,19 @@ class Test {
 			Stempad.gamepad_processEvents();
 			//trace(Stempad.gamepad_numDevices());
 			for (i in 0 ... Stempad.gamepad_numDevices()) {
-				var device:GamepadDevice = Stempad.gamepad_deviceAtIndex(i).value;
+				var dPointer:Pointer<GamepadDevice> = Stempad.gamepad_deviceAtIndex(i);
+				var device:GamepadDevice = dPointer.value;
 				for (i in 0 ... device.numButtons) {
-					var states:Pointer<Bool> = device.buttonStates;
-					if (states.add(i).ref == true) {
+					var states:Pointer<Bool> = Pointer.fromRaw(cast device.buttonStates);
+					states = states.add(i);
+					if (states.ref == true) {
 						trace("P" + Std.string(device.deviceID) + " button " + i);
 					}
 				}
 				for (i in 0 ... device.numAxes) {
-					var aStates:Pointer<Float32> = device.axisStates;
-					var axisVal:Float = aStates.add(i).ref;
+					var aStates:Pointer<Float32> = Pointer.fromRaw(cast device.axisStates);
+					aStates = aStates.add(i);
+					var axisVal:Float = aStates.ref;
 					if(Math.abs(axisVal) > .15 && Math.abs(axisVal) != 1)
 						trace(axisVal);
 				}

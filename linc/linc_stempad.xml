@@ -9,7 +9,6 @@
         <!-- add files and flags to the haxe c++ build -->
 
         <compilerflag value='-I${LINC_STEMPAD_PATH}/linc/'/>
-        <compilerflag value='-DSTEMPAD_EXAMPLE_DEFINE_FOR_THE_CPP_CODE'/>
 
         <file name='${LINC_STEMPAD_PATH}linc/linc_stempad.cpp' />
 

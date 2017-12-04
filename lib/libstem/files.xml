@@ -2,7 +2,9 @@
 	<files id="native-libstem">
 		
 		<file name="${LINC_STEMPAD_PATH}lib/libstem/src/Gamepad_private.c"/>
-		<file name="${LINC_STEMPAD_PATH}lib/libstem/src/Gamepad_windows_dinput.c"/>
+		<file name="${LINC_STEMPAD_PATH}lib/libstem/src/Gamepad_windows_dinput.c" if="windows" />
+    <file name="${LINC_STEMPAD_PATH}lib/libstem/src/Gamepad_macosx.c" if="mac" />
+    <file name="${LINC_STEMPAD_PATH}lib/libstem/src/Gamepad_linux.c" if="linux" />
 		
 	</files>
 	

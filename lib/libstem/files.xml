@@ -10,7 +10,7 @@
 	
 	<target id="haxe">
 		<!-- add linker flags to the haxe build output -->
-
+        <vflag name="-framework" value="IOKit" if="mac" />
         <!-- reference the files in the haxe target so they get included -->
         <files id="native-libstem"/>
 	</target>

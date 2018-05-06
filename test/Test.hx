@@ -1,9 +1,7 @@
-import cpp.Callable;
 import cpp.vm.Thread;
 import haxe.Log;
 import stempad.Stempad;
 import cpp.Pointer;
-import cpp.ConstCharStar;
 import cpp.Float32;
 
 class Test {
@@ -16,8 +14,7 @@ class Test {
 		trace(numDevices);
 		
 		for (i in 0 ... numDevices) {
-			var dPointer:Pointer<GamepadDevice> = Stempad.gamepad_deviceAtIndex(i);
-			var device:GamepadDevice = dPointer.value;
+			var device:GamepadDevice = Stempad.gamepad_deviceAtIndex(i);
 			trace("Pad " + Std.string(device.deviceID));
 			trace("\tdescription: " + device.description.toString());
 			//vendor and product IDs are 4-digit hex numbers.
@@ -41,8 +38,7 @@ class Test {
 			Stempad.gamepad_processEvents();
 			//trace(Stempad.gamepad_numDevices());
 			for (i in 0 ... Stempad.gamepad_numDevices()) {
-				var dPointer:Pointer<GamepadDevice> = Stempad.gamepad_deviceAtIndex(i);
-				var device:GamepadDevice = dPointer.value;
+				var device:GamepadDevice = Stempad.gamepad_deviceAtIndex(i);
 				for (i in 0 ... device.numButtons) {
 					var states:Pointer<Bool> = Pointer.fromRaw(cast device.buttonStates);
 					states = states.add(i);

@@ -22,7 +22,7 @@
 
 // Special thanks to SDL2 for portions of DirectInput and XInput code used in this implementation
 
-#define _WIN32_WINNT 0x0501
+#define _WIN32_WINNT 0x0602
 #define INITGUID
 #define DIRECTINPUT_VERSION 0x0800
 #ifdef _MSC_VER
@@ -104,6 +104,7 @@ static const char * xInputDeviceNames[4] = {
 	"XInput Controller 3",
 	"XInput Controller 4"
 };
+static const char * xInputGuitarName = "XInput Guitar Controller";
 static DWORD (WINAPI * XInputGetStateEx_proc)(DWORD dwUserIndex, XINPUT_STATE_EX * pState);
 static DWORD (WINAPI * XInputGetState_proc)(DWORD dwUserIndex, XINPUT_STATE * pState);
 static DWORD (WINAPI * XInputGetCapabilities_proc)(DWORD dwUserIndex, DWORD dwFlags, XINPUT_CAPABILITIES * pCapabilities);
@@ -789,11 +790,25 @@ void Gamepad_detectDevices() {
 				deviceRecordPrivate->playerIndex = playerIndex;
 				deviceRecord->privateData = deviceRecordPrivate;
 				deviceRecord->deviceID = nextDeviceID++;
-				deviceRecord->description = xInputDeviceNames[playerIndex];
-				// HACK: XInput doesn't provide any way to get vendor and product ID, nor any way to map player index to
-				// DirectInput device enumeration. All we can do is assume all XInput devices are XBox 360 controllers.
-				deviceRecord->vendorID = 0x45E;
-				deviceRecord->productID = 0x28E;
+                BYTE subtype = capabilities.SubType;
+                if(subtype == XINPUT_DEVSUBTYPE_GUITAR ||
+                   subtype == XINPUT_DEVSUBTYPE_GUITAR_ALTERNATE ||
+                   subtype == XINPUT_DEVSUBTYPE_GUITAR_BASS)
+                {
+                    deviceRecord->description = xInputGuitarName;
+                    // TODO : find actual vendor/product ID for the guitar controller
+                    deviceRecord->vendorID = 0x1430;
+                    deviceRecord->productID = 0x4748;
+
+                }
+                else 
+                    {
+                    deviceRecord->description = xInputDeviceNames[playerIndex];
+                    // HACK: XInput doesn't provide any way to get vendor and product ID, nor any way to map player index to
+                    // DirectInput device enumeration. All we can do is assume all XInput devices are XBox 360 controllers.
+                    deviceRecord->vendorID = 0x45E;
+                    deviceRecord->productID = 0x28E;
+                }
 				deviceRecord->numAxes = 6;
 				deviceRecord->numButtons = 15;
 				deviceRecord->axisStates = calloc(sizeof(float), deviceRecord->numAxes);

@@ -796,7 +796,7 @@ void Gamepad_detectDevices() {
                    subtype == XINPUT_DEVSUBTYPE_GUITAR_BASS)
                 {
                     deviceRecord->description = xInputGuitarName;
-                    // TODO : find actual vendor/product ID for the guitar controller
+                    // These are the IDs for our Guitar Hero controller, similar 'assume all' hack as below.
                     deviceRecord->vendorID = 0x1430;
                     deviceRecord->productID = 0x4748;
 

@@ -22,6 +22,8 @@
 
 // Special thanks to SDL2 for portions of DirectInput and XInput code used in this implementation
 
+// Modified by JellyTeam (Liam) 11/2018 to disable XInput
+
 #define _WIN32_WINNT 0x0602
 #define INITGUID
 #define DIRECTINPUT_VERSION 0x0800
@@ -119,6 +121,7 @@ void Gamepad_init() {
 		HMODULE module;
 		HRESULT (WINAPI * DirectInput8Create_proc)(HINSTANCE, DWORD, REFIID, LPVOID *, LPUNKNOWN);
 		
+        #if 0
 		module = LoadLibrary("XInput1_4.dll");
 		if (module == NULL) {
 			module = LoadLibrary("XInput1_3.dll");
@@ -135,6 +138,8 @@ void Gamepad_init() {
 			XInputGetState_proc = (DWORD (WINAPI *)(DWORD, XINPUT_STATE *)) GetProcAddress(module, "XInputGetState");
 			XInputGetCapabilities_proc = (DWORD (WINAPI *)(DWORD, DWORD, XINPUT_CAPABILITIES *)) GetProcAddress(module, "XInputGetCapabilities");
 		}
+        #endif
+        xInputAvailable = false;
 		
 		//result = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, &IID_IDirectInput8, (void **) &directInputInterface, NULL);
 		// Calling DirectInput8Create directly crashes in 64-bit builds for some reason. Loading it with GetProcAddress works though!

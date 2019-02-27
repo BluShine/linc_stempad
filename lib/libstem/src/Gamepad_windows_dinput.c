@@ -22,7 +22,9 @@
 
 // Special thanks to SDL2 for portions of DirectInput and XInput code used in this implementation
 
-#define _WIN32_WINNT 0x0501
+// Modified by JellyTeam (Liam) 11/2018 to disable XInput
+
+#define _WIN32_WINNT 0x0602
 #define INITGUID
 #define DIRECTINPUT_VERSION 0x0800
 #ifdef _MSC_VER
@@ -104,6 +106,7 @@ static const char * xInputDeviceNames[4] = {
 	"XInput Controller 3",
 	"XInput Controller 4"
 };
+static const char * xInputGuitarName = "XInput Guitar Controller";
 static DWORD (WINAPI * XInputGetStateEx_proc)(DWORD dwUserIndex, XINPUT_STATE_EX * pState);
 static DWORD (WINAPI * XInputGetState_proc)(DWORD dwUserIndex, XINPUT_STATE * pState);
 static DWORD (WINAPI * XInputGetCapabilities_proc)(DWORD dwUserIndex, DWORD dwFlags, XINPUT_CAPABILITIES * pCapabilities);
@@ -118,6 +121,7 @@ void Gamepad_init() {
 		HMODULE module;
 		HRESULT (WINAPI * DirectInput8Create_proc)(HINSTANCE, DWORD, REFIID, LPVOID *, LPUNKNOWN);
 		
+        #if 0
 		module = LoadLibrary("XInput1_4.dll");
 		if (module == NULL) {
 			module = LoadLibrary("XInput1_3.dll");
@@ -134,6 +138,8 @@ void Gamepad_init() {
 			XInputGetState_proc = (DWORD (WINAPI *)(DWORD, XINPUT_STATE *)) GetProcAddress(module, "XInputGetState");
 			XInputGetCapabilities_proc = (DWORD (WINAPI *)(DWORD, DWORD, XINPUT_CAPABILITIES *)) GetProcAddress(module, "XInputGetCapabilities");
 		}
+        #endif
+        xInputAvailable = false;
 		
 		//result = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, &IID_IDirectInput8, (void **) &directInputInterface, NULL);
 		// Calling DirectInput8Create directly crashes in 64-bit builds for some reason. Loading it with GetProcAddress works though!
@@ -789,11 +795,25 @@ void Gamepad_detectDevices() {
 				deviceRecordPrivate->playerIndex = playerIndex;
 				deviceRecord->privateData = deviceRecordPrivate;
 				deviceRecord->deviceID = nextDeviceID++;
-				deviceRecord->description = xInputDeviceNames[playerIndex];
-				// HACK: XInput doesn't provide any way to get vendor and product ID, nor any way to map player index to
-				// DirectInput device enumeration. All we can do is assume all XInput devices are XBox 360 controllers.
-				deviceRecord->vendorID = 0x45E;
-				deviceRecord->productID = 0x28E;
+                BYTE subtype = capabilities.SubType;
+                if(subtype == XINPUT_DEVSUBTYPE_GUITAR ||
+                   subtype == XINPUT_DEVSUBTYPE_GUITAR_ALTERNATE ||
+                   subtype == XINPUT_DEVSUBTYPE_GUITAR_BASS)
+                {
+                    deviceRecord->description = xInputGuitarName;
+                    // These are the IDs for our Guitar Hero controller, similar 'assume all' hack as below.
+                    deviceRecord->vendorID = 0x1430;
+                    deviceRecord->productID = 0x4748;
+
+                }
+                else 
+                    {
+                    deviceRecord->description = xInputDeviceNames[playerIndex];
+                    // HACK: XInput doesn't provide any way to get vendor and product ID, nor any way to map player index to
+                    // DirectInput device enumeration. All we can do is assume all XInput devices are XBox 360 controllers.
+                    deviceRecord->vendorID = 0x45E;
+                    deviceRecord->productID = 0x28E;
+                }
 				deviceRecord->numAxes = 6;
 				deviceRecord->numButtons = 15;
 				deviceRecord->axisStates = calloc(sizeof(float), deviceRecord->numAxes);
